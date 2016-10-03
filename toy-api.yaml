@@ -1,0 +1,172 @@
+swagger: "2.0"
+info:
+  description:  This is a demo api server for managing financial transactions.
+  version: "0.1.0"
+  title: Fractal demo API
+  contact:
+    name: akovacs@101386@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+host: localhost
+basePath: /
+schemes:
+  - http
+consumes:
+  - plaintext
+produces:
+  - plaintext
+paths:
+  /transactions/:
+    get:
+      description: Returns all transactions that the user has access to
+      operationId: getAllTransactions
+      produces:
+        - plaintext
+      responses:
+        '200':
+          description: transaction response
+          schema:
+            $ref: '#/definitions/transactionList'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Queues a new transaction.  ID is assigned by the server
+      operationId: queueTransaction
+      produces:
+        - plaintext
+      responses:
+        '200':
+          description: transaction response
+          schema:
+            $ref: '#/definitions/transactionList'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+      description: Replaces entire transaction queue
+      operationId: updateAllTransactions
+      produces:
+        - plaintext
+      responses:
+        '200':
+          description: transaction response
+          schema:
+            $ref: '#/definitions/transactionList'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: Deletes entire transaction queue
+      operationId: deleteAllTransactions
+      produces:
+        - plaintext
+      responses:
+        '200':
+          description: simple response
+          schema:
+            $ref: '#/definitions/transactionMessage'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+  /transactions/{id}:
+    get:
+      description: Returns a transaction with the given ID
+      operationId: getTransaction
+      produces:
+        - plaintext
+      parameters:
+        - name: id
+          in: path
+          description: ID of transaction to fetch
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: transaction response
+          schema:
+            $ref: '#/definitions/transactionList'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    post:
+      description: Executes a transaction with the given ID
+      operationId: executeTransaction
+      produces:
+        - plaintext
+      parameters:
+        - name: id
+          in: path
+          description: ID of transaction to execute
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: transaction response
+          schema:
+            $ref: '#/definitions/transactionMessage'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    put:
+      description: changes transaction ID
+      operationId: modifyTransaction
+      produces:
+        - plaintext
+      parameters:
+        - name: id
+          in: path
+          description: ID of transaction to fetch
+          required: true
+          type: integer
+          format: int64
+        - name: newID
+          in: query
+          description: new ID to set
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: transaction response
+          schema:
+            $ref: '#/definitions/transactionList'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    delete:
+      description: deletes a single transaction based on the ID supplied
+      operationId: deleteTransaction
+      parameters:
+        - name: id
+          in: path
+          description: ID of transaction to delete
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: transaction response
+          schema:
+            $ref: '#/definitions/transactionMessage'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+definitions:
+  transactionList:
+    type: string
+  transactionMessage:
+    type: string
+  errorModel:
+    type: string
